@@ -1,19 +1,36 @@
 package tv.bision.tanktank;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
+public class CoreActivity extends AppCompatActivity {
 
-public class CoreActivity extends ActionBarActivity {
+    GameView mSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_core);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        mSurfaceView = new GameView(this);
+        setContentView(mSurfaceView);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSurfaceView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSurfaceView.resume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -28,9 +45,12 @@ public class CoreActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
